@@ -1,0 +1,81 @@
+<div class="container-fluid">
+    <form action="" id="employee-form">
+        <div class="form-group mb-3">
+            <label for="code" class="control-label">Code</label>
+            <input type="text" name="code" id="code" class="form-control form-control-sm rounded-0" value="{% if emps.code %}{{emps.code}}{% endif %}" required>
+        </div>
+        <div class="form-group mb-3">
+            
+            <div class="form-group mb-3">
+                <label for="name" class="control-label">Employee Name</label>
+                <input type="text" name="name" id="name" class="form-control form-control-sm rounded-0" value="{% if emps.fullname %}{{emps.fullname}}{% endif %}" required>
+            </div>
+            <div class="form-group mb-3">
+                <label for="description" class="control-label">Description</label>
+                <textarea rows="5" name="address" id="address" class="form-control form-control-sm rounded-0" required>{% if emps.address %}{{emps.address}}{% endif %}</textarea>
+            </div>
+            <div class="form-group mb-3">
+                <label for="salary" class="control-label">Salary</label>
+                <input type="number" name="salary" id="salary" class="form-control form-control-sm rounded-0" value="{% if emps.salary %}{{emps.salary}}{% endif %}" required>
+            </div>
+            <div class="form-group mb-3">
+                <label for="status" class="control-label">Status</label>
+                <input type="text" name="status" id="status" class="form-control form-control-sm rounded-0" value="{% if emps.status %}{{emps.status}}{% endif %}" required>
+            </div>
+            <div class="form-group mb-3">
+                <label for="dob" class="control-label">Status</label>
+                <input type="date" name="dob" id="dob" class="form-control form-control-sm rounded-0" value="{% if emps.status %}{{emps.status}}{% endif %}" required>
+            </div>
+            
+    </form>
+    </div>
+    <script>
+        $(function() {
+            $('#employee-form').submit(function(e) {
+                e.preventDefault();
+                var _this = $(this)
+                $('.err-msg').remove();
+                var el = $('<div>')
+                el.addClass("alert alert-danger err-msg")
+                el.hide()
+                if (_this[0].checkValidity() == false) {
+                    _this[0].reportValidity();
+                    return false;
+                }
+                start_loader();
+                $.ajax({
+                    headers: {
+                        "X-CSRFToken": '{{csrf_token}}'
+                    },
+                    url: "{% url 'save-employee-page' %}",
+                    data: new FormData($(this)[0]),
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    method: 'POST',
+                    type: 'POST',
+                    dataType: 'json',
+                    error: err => {
+                        console.log(err)
+                        end_loader();
+                    },
+                    success: function(resp) {
+                        if (typeof resp == 'object' && resp.status == 'success') {
+                            el.removeClass("alert alert-danger err-msg")
+                            location.reload()
+                        } else if (resp.status == 'failed' && !!resp.msg) {
+                            el.text(resp.msg)
+                        } else {
+                            el.text("An error occured", 'error');
+                            end_loader();
+                            console.error(resp)
+                        }
+                        _this.prepend(el)
+                        el.show('slow')
+                        $("html, body, .modal").scrollTop(0);
+                        end_loader()
+                    }
+                })
+            })
+        })
+    </script>
