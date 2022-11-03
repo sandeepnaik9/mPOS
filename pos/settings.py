@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure--w(dug*va_megpa25w$gmv8o6+f8!fg_*m1^u$)z25pab0hicm
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['mposg.herokuapp.com']
 
 
 # Application definition
@@ -121,10 +121,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (
-    # location of your application, should not be public web accessible 
-    './static',
-)
+STATIC_ROOT = BASE_DIR / 'static'
+# STATICFILES_DIRS = (
+#     # location of your application, should not be public web accessible 
+#     './static',
+# )
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
