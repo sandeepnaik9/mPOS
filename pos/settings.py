@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure--w(dug*va_megpa25w$gmv8o6+f8!fg_*m1^u$)z25pab0hicm
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['mposg.herokuapp.com']
+ALLOWED_HOSTS = ['mposg.herokuapp.com','*']
 
 
 # Application definition
@@ -119,13 +119,13 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-
+import os
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'static'
-# STATICFILES_DIRS = (
-#     # location of your application, should not be public web accessible 
-#     './static',
-# )
+STATIC_ROOT = os.path.join(BASE_DIR,'/staticfiles')
+STATICFILES_DIRS = (
+    # location of your application, should not be public web accessible 
+    './static',
+)
 
 
 # Default primary key field type
